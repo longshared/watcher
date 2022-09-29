@@ -311,11 +311,7 @@ func (w *Watcher) AddRecursive(name string) (err error) {
 
 func (w *Watcher) listRecursive(name string) (map[string]os.FileInfo, error) {
 	fileList := make(map[string]os.FileInfo)
-	//ignore system file
-	//recBin := path2.Join(name, "$RECYCLE.BIN")
-	//recBin, _ = filepath.Abs(recBin)
-	//sysVolInfo := path2.Join(name, "System Volume Information")
-	//sysVolInfo, _ = filepath.Abs(sysVolInfo)
+	
 	return fileList, filepath.Walk(name, func(paths string, info os.FileInfo, err error) error {
 		//if paths == recBin || paths == sysVolInfo {
 		//	return nil
