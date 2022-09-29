@@ -27,12 +27,37 @@ func TestWMain(t *testing.T) {
 			}
 		}
 	}()
-
+	// Ignore ../test_folder/test_folder_recursive and ../test_folder/.dotfile
+	//w.AddFilterHook(func(info os.FileInfo, fullPath string) error {
+	//	if fullPath == "E:\\$RECYCLE.BIN" || fullPath == "E:\\System Volume Information" {
+	//		return ErrSkip
+	//	}
+	//
+	//	// Match
+	//	matched, err := regexp.MatchString("E:\\$RECYCLE.BIN.*", fullPath)
+	//	if err != nil {
+	//		return nil
+	//	}
+	//	if matched {
+	//		return ErrSkip
+	//	}
+	//	matched, err = regexp.MatchString("E:\\System Volume Information.*", fullPath)
+	//	if err != nil {
+	//		return nil
+	//	}
+	//	if matched {
+	//		return ErrSkip
+	//	}
+	//	// No match.
+	//	return nil
+	//})
 	// Watch test_folder recursively for changes.
-	if err := w.AddRecursive("D:\\d"); err != nil {
+	if err := w.AddRecursive("E:\\"); err != nil {
 		log.Fatalln(err)
 	}
-
+	//if err := w.Ignore("E:\\$RECYCLE.BIN", "E:\\System Volume Information"); err != nil {
+	//	log.Fatalln(err)
+	//}
 	// Print a list of all of the files and folders currently
 	// being watched and their paths.
 	for path, f := range w.WatchedFiles() {

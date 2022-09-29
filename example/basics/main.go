@@ -46,7 +46,7 @@ func main() {
 	}
 
 	// Watch test_folder recursively for changes.
-	if err := w.AddRecursive("D:\\d"); err != nil {
+	if err := w.AddRecursive("D:\\"); err != nil {
 		log.Fatalln(err)
 	}
 

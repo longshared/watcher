@@ -26,7 +26,7 @@ func main() {
 	}()
 
 	// Watch test_folder recursively for changes.
-	if err := w.AddRecursive("../test_folder"); err != nil {
+	if err := w.AddRecursive("example/test_folder"); err != nil {
 		log.Fatalln(err)
 	}
 
@@ -40,13 +40,13 @@ func main() {
 	go func() {
 		w.Wait()
 		// Ignore ../test_folder/test_folder_recursive and ../test_folder/.dotfile
-		if err := w.Ignore("../test_folder/test_folder_recursive", "../test_folder/.dotfile"); err != nil {
+		if err := w.Ignore("example/test_folder/test_folder_recursive", "example/test_folder/.dotfile"); err != nil {
 			log.Fatalln(err)
 		}
 		// Print a list of all of the files and folders currently being watched
 		// and their paths after adding files and folders to the ignore list.
 		for path, f := range w.WatchedFiles() {
-			fmt.Printf("%s: %s\n", path, f.Name())
+			fmt.Printf("----%s: %s\n", path, f.Name())
 		}
 		fmt.Println()
 	}()

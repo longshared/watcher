@@ -311,29 +311,38 @@ func (w *Watcher) AddRecursive(name string) (err error) {
 
 func (w *Watcher) listRecursive(name string) (map[string]os.FileInfo, error) {
 	fileList := make(map[string]os.FileInfo)
-
-	return fileList, filepath.Walk(name, func(path string, info os.FileInfo, err error) error {
+	//ignore system file
+	//recBin := path2.Join(name, "$RECYCLE.BIN")
+	//recBin, _ = filepath.Abs(recBin)
+	//sysVolInfo := path2.Join(name, "System Volume Information")
+	//sysVolInfo, _ = filepath.Abs(sysVolInfo)
+	return fileList, filepath.Walk(name, func(paths string, info os.FileInfo, err error) error {
+		//if paths == recBin || paths == sysVolInfo {
+		//	return nil
+		//}
 		if err != nil {
-			return err
+			fmt.Errorf(err.Error())
+			//return err
 		}
 
 		for _, f := range w.ffh {
-			err := f(info, path)
+			err = f(info, paths)
 			if err == ErrSkip {
 				return nil
 			}
 			if err != nil {
-				return err
+				fmt.Errorf(err.Error())
 			}
 		}
 
 		// If path is ignored and it's a directory, skip the directory. If it's
 		// ignored and it's a single file, skip the file.
-		_, ignored := w.ignored[path]
+		_, ignored := w.ignored[paths]
 
-		isHidden, err := isHiddenFile(path)
+		isHidden, err := isHiddenFile(paths)
 		if err != nil {
-			return err
+			fmt.Errorf(err.Error())
+			//return err
 		}
 
 		if ignored || (w.ignoreHidden && isHidden) {
@@ -343,7 +352,7 @@ func (w *Watcher) listRecursive(name string) (map[string]os.FileInfo, error) {
 			return nil
 		}
 		// Add the path and it's info to the file list.
-		fileList[path] = info
+		fileList[paths] = info
 		return nil
 	})
 }
